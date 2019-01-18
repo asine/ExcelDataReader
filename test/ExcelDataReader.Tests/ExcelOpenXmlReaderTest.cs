@@ -1511,5 +1511,32 @@ namespace ExcelDataReader.Netstandard20.Tests
                 Assert.AreEqual(1, reader.RowCount);
             }
         }
+
+        [TestMethod]
+        public void GitIssue_354()
+        {
+            using (var reader = ExcelReaderFactory.CreateOpenXmlReader(Configuration.GetTestWorkbook("test_git_issue_354.xlsx")))
+            {
+                var result = reader.AsDataSet().Tables[0];
+
+                Assert.AreEqual(1, result.Rows.Count);
+                Assert.AreEqual("cell data", result.Rows[0][0]);
+            }
+        }
+
+        [TestMethod]
+        public void GitIssue_364()
+        {
+            using (var reader = ExcelReaderFactory.CreateOpenXmlReader(Configuration.GetTestWorkbook("test_git_issue_364.xlsx")))
+            {
+                Assert.AreEqual(1, reader.RowCount);
+                reader.Read();
+
+                Assert.AreEqual(0, reader.GetNumberFormatIndex(0));
+                Assert.AreEqual(-1, reader.GetNumberFormatIndex(1));
+                Assert.AreEqual(14, reader.GetNumberFormatIndex(2));
+                Assert.AreEqual(164, reader.GetNumberFormatIndex(3));
+            }
+        }
     }
 }
